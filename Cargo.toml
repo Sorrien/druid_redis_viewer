@@ -1,0 +1,12 @@
+[package]
+name = "druid_redis_viewer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+redis = "0.20.0"
+generational-arena = "0.2"
+
+[dependencies.druid]
+git = "https://github.com/linebender/druid.git"
+features = ["im"]
