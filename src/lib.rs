@@ -103,16 +103,6 @@ fn handle_events(event_sink: druid::ExtEventSink, receiver: Receiver<RedisViewer
                         Some(ref mut connection) => {
                             let redis_value = get_redis_value(connection, &key)
                                 .expect("failed to get value for key");
-                            match redis_value {
-                                RedisValue::String(v) => println!("{}", v),
-                                RedisValue::List(_) => (),
-                                RedisValue::Set(_) => (),
-                                RedisValue::ZSet(_) => (),
-                                RedisValue::Hash(_) => (),
-                                RedisValue::Null => (),
-                            }
-                            let redis_value = get_redis_value(connection, &key)
-                                .expect("failed to get value for key");
                             event_sink.add_idle_callback(move |data: &mut RedisViewerState| {
                                 data.redis_value = Arc::from(Some(redis_value));
                             });
@@ -136,6 +126,8 @@ fn handle_events(event_sink: druid::ExtEventSink, receiver: Receiver<RedisViewer
 }
 
 fn sync_keys(event_sink: &druid::ExtEventSink, keys: Vec<String>) {
+    let mut keys = keys.clone();
+    keys.sort();
     event_sink.add_idle_callback(move |data: &mut RedisViewerState| {
         data.keys = Vector::from(keys.clone());
         let sender = data.sender.to_owned();

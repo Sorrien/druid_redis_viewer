@@ -1,6 +1,6 @@
 pub(crate) mod redislogic {
     use redis::{Commands, Connection, ConnectionAddr};
-    use std::collections::HashMap;
+    use std::{collections::HashMap, fs::File, io::Write};
 
     pub fn connect_redis(address: &str, port: u16, db: i64) -> redis::RedisResult<Connection> {
         let client = redis::Client::open(redis::ConnectionInfo {
